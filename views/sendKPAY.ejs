@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./include/meta.ejs %>
+  <% include ./include/common.ejs %>
+  <style>
+    .content-wrapper{
+      background: black;
+    }
+    .text-dark {
+    color: #ffffff!important;
+    }
+    #subscription_list li {
+      padding-right:20px;
+    }
+    .sublistright {
+      float:right;
+    }
+    .btn-info{
+      background-color:black;
+      border-color: white;
+    }
+    .card-secondary:not(.card-outline) .card-header {
+   background-color: #151616; 
+    }
+    @media (max-width:500px){.small-box h3{font-size:1.5rem} ol{padding-inline-start: 20px;font-size:13px;}}
+    @media (max-width:400px){#subscription_list li{padding-bottom:20px;}}
+    @media (max-width:350px){.small-box h3{font-size:1.1rem}}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+    <% include ./include/sidebar.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+    <% include ./include/contentheader.ejs %>
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row " id="check_menu">
+            <div class="whitebigbox" >
+              <div>
+                <div class="col-lg-12">
+                  <!-- small box -->
+                  <p>TO<span1>*</span1></p>
+                  <div class="small-box bg-info">
+                      <input placeholder="Receiver ID" class="form-control greeninput"  id="to" style="text-align: left;" >
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="small-box bg-info">
+                    <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="checkid">
+                      <span>Check ID</span>
+                      <i class="fa fa-check" id="check_icon" style=display:none></i> 
+                    </button>
+                    <input type="hidden" value="N" id="checkedstatus" >
+                  </div>
+                </div>  
+              </div>     
+            </div>
+            <div class="col-lg-12">
+              <!-- small box -->
+            </div>
+          </div>
+
+          <div class="col-lg-12" style="display: inline-block;height:20px;">
+          </div>
+
+          <div class="row" id="send_menu" style="display: none;" >
+            <div class="whitebigbox" >
+              <div>
+                <div class="col-lg-12">
+                  <!-- small box -->
+                  <p>Amount To Send<span1>*</span1></p>
+                  <div class="small-box bg-info">
+                      <input placeholder="0 KRpay" class="form-control greeninput"  id="K_PAY" style="text-align: right;" >
+                  </div>
+                  <div>
+                    <div id="balance_check" style="display: none;"><%-KPAY%>
+                    </div>
+                    <div > 
+                      <pr>current KRpay : <%=KPAY_dispay%> KRpay</pr>
+                    </div>
+                    <br>
+                    <div id="transactionfee" >
+                      Transaction Fee (2%) : 
+                    </div>
+                    <br>
+                    <div id="exchangerate" >
+                      Exchange Rate :  
+                    </div>
+                    <br>
+                    <p>Receiving amount</p>
+                    <div id="received_amount" class="greeninput" style="text-align: right;">
+                      0 UZpay
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="small-box bg-info">
+                    <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="confirmbtn">
+                      <span>Send</span>
+                      <i class="fa fa-arrow-right fa-x"></i> 
+                    </button>
+                  </div>
+                </div>  
+              </div>     
+            </div>
+          </div>
+      
+          <div class="row" id="receipt_menu" style="display: none;">
+            <h4 style="padding-left: 17px;">Transaction Receipt</h4>
+            <div class="whitebigbox">
+              <div class="col-lg-12">
+                <!-- small box -->
+                  <p>To</p>
+                    <div class="small-box bg-info">
+                      <div class="inner form-control greeninput" style="text-align: right; padding-right:23px;" id="to_result" >
+                      </div>
+                    </div>
+              </div>
+              <div class="col-lg-12">
+                <!-- small box -->
+                  <p>Sended amount</p>
+                  <div class="small-box bg-info">
+                    <div class="inner form-control greeninput" style="text-align: right;padding-right:23px;" id="sent_amount" >   
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-12">
+                <!-- small box -->
+                  <p>Received amount</p>
+                  <div class="small-box bg-info">
+                    <div class="inner form-control greeninput" style="text-align: right;padding-right:23px;" id="received_amount_result" >   
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-12">
+                <!-- small box -->
+                  <p>Transactionfee</p>
+                  <div class="small-box bg-info">
+                    <div class="inner form-control greeninput" style="text-align: right;padding-right:23px;" id="transactionfee_result" >
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="small-box bg-info">
+                  <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="check_receipt">
+                    <span>Check Complete</span>
+                    <i class="fa fa-check" id="check_icon"></i> 
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row " id="password_check" style="display: none;">
+            <div class="whitebigbox" >
+              <div>
+                <div class="col-lg-12">
+                  <!-- small box -->
+                  <p>Password<span1>*</span1></p>
+                  <div class="small-box bg-info">
+                      <input placeholder="password" class="form-control greeninput"  id="withdraw_password" style="text-align: left;" >
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="small-box bg-info">
+                    <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="checkpwd">
+                      <span>Check password</span>
+                      <i class="fa fa-check" id="check_icon" style=display:none></i> 
+                    </button>
+                    <input type="hidden" value="N" id="checkedstatus" >
+                  </div>
+                </div>  
+              </div>     
+            </div>
+        </div>
+        <br>
+        <!-- /.card-body -->
+      </section>
+    <!-- /.content -->
+    </div>
+  <!-- /.content-wrapper -->
+  </div>
+<!-- ./wrapper -->
+
+<% include ./include/script.ejs %>
+<script src="/dist/js/demo.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#K_PAY").blur(function(){
+      let K_PAY = Number($("#K_PAY").val())
+      let balance_check = Number(<%=KPAY%>)
+      if(balance_check >= K_PAY){
+        let sended_k_pay = $("#K_PAY").val()
+        let fee_ratio = 0.02; //수수료 2 %
+        let change_ratio = 7.8896; //환욜 %
+        let transactionfee = Math.floor(sended_k_pay * fee_ratio);
+        let received_amount = Math.floor((sended_k_pay-transactionfee)*change_ratio)//수수료를 제외한 나머지 금액에 환율 적용한 값
+        $("#transactionfee").text("Transaction Fee (2%) : "+ transactionfee.toLocaleString() +" KRpay");
+        $("#received_amount").text(received_amount.toLocaleString()+" UZpay");
+        $("#exchangerate").text("Exchange Rate : 1 KRW ="+change_ratio.toLocaleString()+" UZS")//1 KRW = 7.8896 UZS
+      }else{
+        alert("You need more KRpay")
+        let sended_k_pay = $("#K_PAY").val(0);
+      }
+    })
+    
+    $("#checkid").on("click",function(){
+      $.ajax({
+        type: "POST",
+        url : '/send/checkid',
+        data : {
+          'to' : $("#to").val()
+        },
+        success: async function(r){
+          if(r.status == true){
+              if (confirm("this ID is correct user name is :" +r.data.userrealnameField +"\n Check okay if its right")){
+                $("#check_icon").show();
+                $("#checkedstatus").val("Y")
+                $("#check_menu").hide('slide', {direction: 'left'}, 100);
+                setTimeout(function() {
+                  $("#send_menu").show('slide', {direction: 'right'}, 500);
+                  }, 150);
+                }else{
+                  alert("cancelled")
+                }
+            }else{
+              alert("There is no User ID please check it again")
+              $("#check_icon").hide();
+              $("#checkedstatus").val("N")
+            }
+        }
+      })
+    })
+
+    $("#checkpwd").on("click",function(){
+      $.ajax({
+        type: "POST",
+        url : 'send/checkpwd',
+        data: {
+          'pwd' : $("#withdraw_password").val()
+        },
+        success: function(r){
+          if(r.status == true){
+            alert("Success")
+            $("#password_check").hide('slide', {direction: 'left'}, 100);
+                    setTimeout(function() {
+                      $("#receipt_menu").show('slide', {direction: 'right'}, 500);
+                    }, 150);
+          }else{
+            alert("wrong password")
+          }
+        }
+      })
+    })
+
+    $("#confirmbtn").on("click",function(){
+      if (confirm('Would you like to proceed with the remittance with the above information?')) {
+        if($("#checkedstatus").val()=="Y"){
+          if($("#K_PAY").val() && $("#to").val()){
+            $.ajax({
+              type: "POST",
+              url : '/send/Kpay',
+              data : {
+                'k_pay' : $("#K_PAY").val(),
+                'to'    : $("#to").val()
+              },
+              success: function(r){
+                if(r.status == true){
+                    $("#send_menu").hide('slide', {direction: 'left'}, 100);
+                  setTimeout(function() {
+                    $("#password_check").show('slide', {direction: 'right'}, 500);
+                  }, 150);
+                    alert("Success")
+                    let sent_amount = Number(r.data.sent_amount)
+                  $("#transactionfee_result").text(r.data.transactionfee.toLocaleString()+" KRpay")
+                  $("#sent_amount").text(sent_amount.toLocaleString()+" KRpay")
+                  $("#received_amount_result").text(r.data.received_amount.toLocaleString()+" UZpay")
+                  $("#to_result").text(r.data.to)
+                }else{
+                  alert("Invalid value found. Please re-enter.")
+                }
+              }
+            })
+          }else{alert("Please enter both the amount to send and the recipient id.")}
+        }else{ alert("Please enter both the amount to send and the recipient id.")}
+      }else{
+        alert("The remittance has been canceled.")
+      }
+    })
+
+    $("#check_receipt").on("click",function(){
+      $(location).attr('href','./');
+    })
+  })
+</script>
+</body>
+</html>

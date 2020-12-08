@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./include/meta.ejs %>
+  <% include ./include/common.ejs %>
+  <style>
+    .content-wrapper {
+      background: black;
+    }
+    .text-dark {
+    color: #ffffff!important;
+    }
+    #subscription_list li {
+      padding-right:20px;
+    }
+    .sublistright {
+      float:right;
+
+    }
+    body {
+    color: black;
+    }
+    .jsgrid-grid-header {
+    background: #0a9a2a;
+    }
+    .jsgrid-header-row>.jsgrid-header-cell {
+    color: white;
+    background: #0a9a2a;
+    }
+    .jsgrid-cell{
+      border-color: #87ca96;
+    }
+    
+    @media (max-width:500px){.small-box h3{font-size:1.5rem} ol{padding-inline-start: 20px;font-size:13px;}}
+    @media (max-width:400px){#subscription_list li{padding-bottom:20px;}}
+    @media (max-width:350px){.small-box h3{font-size:1.1rem}}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <% include ./include/sidebar.ejs %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <% include ./include/contentheader.ejs %>
+ 
+    <!-- Main content -->
+    <section class="content">
+              <!-- /.row -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="adminlisttable"></div>
+                </div>
+              </div>
+              <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<% include ./include/script.ejs %>
+<script src="/dist/js/demo.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#adminlisttable").jsGrid({
+                height: "auto",
+                width: "100%",
+        
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageLoading: true,
+                pageIndex: 1,
+                pageSize: 15,
+        
+                controller: {
+                    loadData: function(filter) {
+                        return $.ajax({
+                            type: "POST",
+                            url: `send/getlist`,
+                            data: filter
+                        });
+                    }
+                },
+        
+                fields: [
+                    // { name: 'send_id', type: 'text', title:'Index' },
+                    // { name: 'user_id', type: 'text', title:'senderID' },
+                    { name: 'to_userid', type: 'text', title:'receiver', align:'center', width:100 },
+                    { name: 'sent_amount', type: 'text', title:'amt', align:'center', width:100 },
+                    // { name: 'received_amount', type: 'text', title:'received amount', align:'center' },
+                    // { name: 'transactionFee', type: 'text', title:'transaction fee', align:'center' },
+                    { name: 'reg_date', type: 'text', title:'date', align:'center', width:200 },
+                    { name: 'send_type', type: 'text', title:'type', align:'center', width:100 }    
+                ],
+                rowClick:function(args){
+                    setformdata(args);
+                }
+            });
+
+  })
+</script>
+</body>
+</html>

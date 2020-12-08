@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../include/meta.ejs %>
+  <% include ../include/common.ejs %>
+  <style>
+.login-page{
+    background: black;
+  }
+  .btn-primary {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+}
+  </style>
+  
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="/" style="color: white;">
+        ALO-PAY
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg"><b>SIGN UP</b></p>
+
+      <form name="frmlogin" action="/signupprocess" method="post">
+        <div class="input-group mb-3">
+          <input type="text" name="user_id" class="form-control" placeholder="ID" value="">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="user_passwd" class="form-control" placeholder="Password" value="">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" name="user_name" class="form-control"  placeholder="name" value="">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fa fa-male"></span>
+              <span class="fa fa-female"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="withdraw_password" class="form-control" id="pwd1"  placeholder="Withdraw Password" value="">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fa fa-unlock-alt"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="withdraw_password2" class="form-control" id="pwd2"  placeholder="Withdraw Password" value="">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fa fa-unlock-alt"></span>
+            </div>
+          </div>
+        </div>
+          <div class="alert alert-danger" id="alert-danger" >비밀번호가 일치하지 않습니다.</div>
+          <div class="alert alert-success" id="alert-success" >비밀번호가 일치합니다.</div> 
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<% include ../include/script.ejs %>
+<script>
+  $(document).ready(function(){
+     $("#alert-success").hide(); 
+     $("#alert-danger").hide(); 
+     $("input").blur(function(){ 
+       var pwd1=$("#pwd1").val(); 
+       var pwd2=$("#pwd2").val(); 
+       if(pwd1 != "" || pwd2 != ""){ 
+         if(pwd1 == pwd2){ 
+           $("#alert-success").show(); 
+           $("#alert-danger").hide(); 
+           $("#submit").removeAttr("disabled"); }
+           else{ 
+             $("#alert-success").hide(); 
+             $("#alert-danger").show(); 
+             $("#submit").attr("disabled", "disabled"); 
+            } 
+          } 
+        }); 
+      }); 
+  </script>
+
+</body>
+</html>
+
+
+

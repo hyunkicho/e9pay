@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./include/meta.ejs %>
+  <% include ./include/common.ejs %>
+  <style>
+    .content-wrapper{
+      background: black;
+    }
+    .text-dark {
+    color: #ffffff!important;
+    }
+    #subscription_list li {
+      padding-right:20px;
+    }
+    .sublistright {
+      float:right;
+    }
+    .btn-info{
+      background-color:black;
+      border-color:white;
+    }
+    .card-secondary:not(.card-outline) .card-header {
+   background-color: #151616; 
+    }
+    body {
+    color: black;
+    }
+    
+    @media (max-width:500px){.small-box h3{font-size:1.5rem} ol{padding-inline-start: 20px;font-size:13px;}}
+    @media (max-width:400px){#subscription_list li{padding-bottom:20px;}}
+    @media (max-width:350px){.small-box h3{font-size:1.1rem}}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <% include ./include/sidebar.ejs %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <% include ./include/contentheader.ejs %>
+ 
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+           <!-- general form elements -->
+                    
+                    
+                  <!-- /.card -->
+            <!-- general form elements disabled -->
+            <div class="card card-secondary">
+              <!-- <div class="card-header">
+                <h3 class="card-title ">Receiver Info</h3>
+              </div> -->
+              <!-- /.card-header -->
+              <div class="card-body">
+                <form role="form">
+                  <label>
+                  Amount to Send(KPAY)
+                  </label>
+                  <div>MyBalance : <%=KPAY%> KPAY </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <input class="form-control" placeholder="Kpay to send" id="K_PAY">
+                      </div>
+                    </div>
+                  </div>
+                  <label>
+                  Expected UZPAY(UZPAY)
+                  </label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <input class="form-control" placeholder="UZpay to received" id="UZ_PAY">
+                      </div>
+                    </div>  
+                  </div>
+                  <label>
+                    LastName,FamilyName
+                  </label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                      <input class="form-control" placeholder="put yout LastName" id="LastName">
+                      </div>
+                    </div>
+                  </div>
+                  <label>
+                     FirstName
+                  </label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                      <input class="form-control" placeholder="put yout FirstName" id="FirstName">
+                      </div>
+                    </div>
+                  </div>
+
+                  <label>phoneNumer</label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                      <input class="form-control" placeholder="put yout phoneNumber" id="phoneNumber">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <label>Bank</label>
+                        <select class="custom-select" id="bankName">
+                          <option>BankA</option>
+                          <option>BankB</option>
+                          <option>BankC</option>
+                          <option>BankD</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <label>Bank account</label>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                      <input class="form-control" placeholder="put yout bank account" id="bankAccount">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <label>City Name</label>
+                        <select class="custom-select" id="cityName">
+                          <option></option>
+                          <option>City A</option>
+                          <option>City B</option>
+                          <option>City C</option>
+                          <option>City D</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <label>Relation with receiver</label>
+                        <select class="custom-select" id="relationship">
+                          <option>Family</option>
+                          <option>Friend</option>
+                          <option>Myself</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <label>Purpose of remittance</label>
+                        <select class="custom-select" id="purposeOfsending">
+                          <option>remittance of foreign workers</option>
+                          <option>Purchase of goods</option>
+                          <option>Etc</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-default float-right" id="confirmbtn">Confirm</button>
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+        <!-- /.card-body -->
+        <br>
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<% include ./include/script.ejs %>
+<script src="/dist/js/demo.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#confirmbtn").onClick("click",function(){
+      if (confirm('위의 정보로 송금을 진행 하시겠습니까?')) {
+      $.ajax({
+        type: "POST",
+        url : '/send/Kpay',
+        data : {
+          'K_PAY' : $("#K_PAY").val(),
+          'UZ_PAY' : $("#UZ_PAY").val(),
+          'LastName' : $("#LastName").val(),
+          'FirstName' : $("#FirstName").val(),
+          'phoneNumber' : $("#phoneNumber").val(),
+          'bankName' : $('#bankName').val(),
+          'bankAccount' : $('#bankAccount').val(),
+          'cityName' : $('#cityName').val(),
+          'relationship' : $('#relationship').val(),
+          'purposeOfsending' : $('#purposeOfsending').val()
+        },
+        success: function(r){
+          if(r.status = true){
+            alert("등록 성공")
+          }else{
+            alert("유효하지 않은 값이 있습니다. 다시 입력해주시기 바랍니다.")
+          }
+        }
+    })
+  })
+</script>
+</body>
+</html>

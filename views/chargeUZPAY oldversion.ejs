@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./include/meta.ejs %>
+  <% include ./include/common.ejs %>
+  <style>
+   .content-wrapper{
+      background: black;
+    }
+    .text-dark {
+    color: #ffffff!important;
+    }
+    #subscription_list li {
+      padding-right:20px;
+    }
+    .sublistright {
+      float:right;
+    }
+    .btn-info{
+      background-color:black;
+      border-color:white;
+    }
+    .card-secondary:not(.card-outline) .card-header {
+   background-color: #151616; 
+    }
+    body {
+    color: #f3f5f7;
+}
+    @media (max-width:500px){.small-box h3{font-size:1.5rem} ol{padding-inline-start: 20px;font-size:13px;}}
+    @media (max-width:400px){#subscription_list li{padding-bottom:20px;}}
+    @media (max-width:350px){.small-box h3{font-size:1.1rem}}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+    <% include ./include/sidebar.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <% include ./include/contentheader.ejs %>
+   
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row" >
+            <div class="whitebigbox" >
+              <div class="col-lg-12 ">
+                <!-- small box -->
+                <p>Charge Amount (UZS)</p>
+                <div class="small-box bg-info">
+                    <input placeholder="0 UZS" class="form-control greeninput"  id="amount" style="text-align: right;" >
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <!-- small box -->
+                <p>Your Current UZpay</p>
+                <div class="small-box bg-info">
+                    <p  class="form-control greeninput" style="text-align: right;">
+                      <%=UZ_pay %> UZpay
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-lg-12" style="display: inline-block;height:20px;">
+          </div>
+          <div class="row">
+            <div class="whitebigbox">
+              <div class="col-lg-12">
+                <div class="small-box bg-info">
+                  <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="charge2">
+                    <span>Bank Account</span>
+                    <i class="	fas fa-money-bill-wave"></i> 
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="small-box bg-info">
+                  <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" onClick="location.href='./sendKPAY'">
+                    <span>Credit Card</span>
+                    <i class="fa fa-credit-card"></i> 
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                <!-- /.card-body -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+  
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+<% include ./include/script.ejs %>
+<script src="/dist/js/demo.js"></script>
+<script>
+$(document).ready(function(){
+  
+  $("#charge").on("click",function(){
+    if (confirm('Do you want to proceed with the account transfer?')) {
+      $.ajax({
+        type: "POST",
+        url : '/charge/UZpay',
+        data : {
+          'amount' : $("#amount").val()
+        },
+        success: function(r){
+          if(r.status = true){
+            alert("this ID is correct user name is :" +r.data.userrealnameField );
+            alert("Bank account check success")
+          }else{
+            alert("Payment failed. Please try again.")
+          }
+        }
+      });
+    }
+  });
+});
+
+$(document).ready(function(){
+  
+  $("#charge2").on("click",function(){
+    if (confirm('Would you like to proceed with your credit card payment?')) {
+      $.ajax({
+        type: "POST",
+        url : '/charge/UZpay',
+        data : {
+          'amount' : $("#amount").val()
+        },
+        success: function(r){
+          if(r.status = true){
+            alert("Card payment success")
+          }else{
+            alert("Payment failed. Please try again.")
+          }
+        }
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

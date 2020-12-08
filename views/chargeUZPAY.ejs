@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ./include/meta.ejs %>
+  <% include ./include/common.ejs %>
+  <style>
+ 
+    
+    @media (max-width:500px){.small-box h3{font-size:1.5rem} ol{padding-inline-start: 20px;font-size:13px;}}
+    @media (max-width:400px){#subscription_list li{padding-bottom:20px;}}
+    @media (max-width:350px){.small-box h3{font-size:1.1rem}}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <% include ./include/sidebar.ejs %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <% include ./include/contentheader.ejs %>
+ 
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+
+        <div class="row" id="charge_menu">
+          <div class="whitebigbox" >
+            <div class="col-lg-12 ">
+              <!-- small box -->
+              <p>Charge Amount (UZS)<span1>*</span1></p>
+              <div class="small-box bg-info">
+                  <input placeholder="0 UZS" class="form-control greeninput"  id="amount" style="text-align: right;" >
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <!-- small box -->
+              <p>Your Current UZpay</p>
+              <div class="small-box bg-info">
+                  <p  class="form-control greeninput" style="text-align: right;">
+                    <%=UZ_pay %> UZpay
+                  </p>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="small-box bg-info">
+                <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="submit">
+                  <span>Submit</span>
+                  <i class="fa fa-arrow-right fa-x"></i> 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12" style="display: inline-block;height:20px;">
+        </div>
+
+        <div class="row" id="choose_menu" style="display: none;">
+          <div class="whitebigbox">
+            <div class="col-lg-12">
+              <div class="small-box bg-info">
+                <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="charge">
+                  <span>Bank Account</span>
+                  <i class="	fas fa-money-bill-wave"></i> 
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="small-box bg-info">
+                <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="charge2">
+                  <span>Credit Card</span>
+                  <i class="fa fa-credit-card"></i> 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row " id="password_check" style="display: none;">
+          <div class="whitebigbox" >
+            <div class="col-lg-12">
+              <!-- small box -->
+              <p>Password<span1>*</span1></p>
+              <div class="small-box bg-info">
+                  <input placeholder="password" class="form-control greeninput"  id="withdraw_password" style="text-align: left;" >
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="small-box bg-info">
+                <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="checkpwd">
+                  <span>Check password</span>
+                  <i class="fa fa-check" id="check_icon" style=display:none></i> 
+                </button>
+                <input type="hidden" value="N" id="checkedstatus" >
+              </div>
+            </div>  
+          </div>     
+        </div> 
+
+        <div class="row" id="receipt_menu" style="display: none;">
+          <h4 style="padding-left: 17px;">Transaction Receipt</h4>
+          <div class="whitebigbox">
+            <div class="col-lg-12">
+              <!-- small box -->
+                <p>Charged amount</p>
+                <div class="small-box bg-info">
+                  <div class="inner form-control greeninput" style="text-align: right;padding-right:23px;" id="charged_amount" >   
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="small-box bg-info">
+                <button type="button" class="btn btn-block btn-primary btn-lg buttonyellow" id="check_receipt">
+                  <span>Check Complete</span>
+                  <i class="fa fa-check" id="check_icon"></i> 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<% include ./include/script.ejs %>
+<script src="/dist/js/demo.js"></script>
+<script>
+$(document).ready(function(){
+  
+  $("#submit").on("click",function(){
+    $("#charge_menu").hide('slide', {direction: 'left'}, 100);
+      setTimeout(function() {
+        $("#password_check").show('slide', {direction: 'right'}, 500);
+        }, 150);
+        
+    $("#checkpwd").on("click",function(){
+      $.ajax({
+        type: "POST",
+        url : 'send/checkpwd',
+        data: {
+          'pwd' : $("#withdraw_password").val()
+        },
+        success: function(r){
+          if(r.status == true){
+            alert("Success")
+            $("#password_check").hide('slide', {direction: 'left'}, 100);
+            setTimeout(function() {
+            $("#choose_menu").show('slide', {direction: 'right'}, 500);
+            }, 150);
+          }else{
+            alert("wrong password")
+          }
+        }
+      })
+    })
+
+    $("#charge").on("click",function(){
+        if (confirm('Do you want to proceed with the account transfer?')) {
+          $.ajax({
+            type: "POST",
+            url : '/charge/UZpay',
+            data : {
+              'amount' : $("#amount").val()
+            },
+            success: function(r){
+              if(r.status = true){
+                let value_result = Number($("#amount").val())
+                console.log(value_result)
+                $("#charged_amount").text(value_result.toLocaleString() + " UZpay");
+
+                $("#choose_menu").hide('slide', {direction: 'left'}, 100);
+                setTimeout(function() {
+                  $("#receipt_menu").show('slide', {direction: 'right'}, 500);
+                  }, 150);
+              }else{
+                alert("cancelled")
+              }
+              alert("Bank account check success")
+              }
+            })
+        }else{
+        alert("Payment failed. Please try again.")
+        }
+    })
+
+  
+    $("#charge2").on("click",function(){
+      if (confirm('Would you like to proceed with your credit card payment?')) {
+        $.ajax({
+          type: "POST",
+          url : '/charge/UZpay',
+          data : {
+            'amount' : $("#amount").val()
+          },
+          success: function(r){
+            if(r.status = true){
+              alert("Card payment success")
+              if(r.status = true){
+                let value_result = Number($("#amount").val());
+                console.log(value_result)
+                $("#charged_amount").text(value_result.toLocaleString() + " UZpay");
+
+                $("#choose_menu").hide('slide', {direction: 'left'}, 100);
+                setTimeout(function() {
+                  $("#receipt_menu").show('slide', {direction: 'right'}, 500);
+                  }, 150);
+              }else{
+                alert("cancelled")
+              }
+            }else{
+              alert("Payment failed. Please try again.")
+            }
+          }
+        });
+      }else(alert("canceled"))
+    })
+  });
+
+  $("#check_receipt").on("click",function(){
+      $(location).attr('href','./');
+    })
+});
+</script>
+</body>
+</html>
